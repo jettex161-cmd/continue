@@ -54,10 +54,12 @@ npm run android:build
 
 The app includes a runtime backend endpoint field so you can configure which API host it uses on the device.
 
-- For Android emulator: use `http://10.0.2.2:5000`
-- For a local Android Termux/server backend: use `http://127.0.0.1:5000`
-- For a hosted backend: use the public API URL
+Important: the APK is the frontend only. You must run the backend server separately and point the app to it.
 
-If the app shows a backend connection error, open the backend host field and set the correct address before retrying.
+- For Android emulator, run the backend on your host machine and use `http://10.0.2.2:5000`
+- For a local Android device Termux/server, run the backend on the device and use `http://127.0.0.1:5000`
+- For a hosted backend, enter the public API URL
+
+If the app shows a backend connection error, start the backend and then update the backend host field before retrying.
 
 This mirrors the same native-capable Android workflow used by the GitHub APK build action.

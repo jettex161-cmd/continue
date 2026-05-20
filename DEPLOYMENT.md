@@ -51,8 +51,10 @@ android/app/build/outputs/apk/debug/app-debug.apk
 ### Android backend setup
 This app requires a backend API endpoint to be reachable by the mobile app.
 
-- On an Android emulator, use `http://10.0.2.2:5000`
-- On a real Android device with a local Termux/server backend, use `http://127.0.0.1:5000`
+Important: the APK ships as the frontend only. You must run the backend server separately and point the app to the correct host.
+
+- On an Android emulator, run the backend on your host machine and use `http://10.0.2.2:5000`
+- On a real Android device with a local Termux/server backend, run the backend on the device and use `http://127.0.0.1:5000`
 - You can also use any hosted backend URL
 
 The APK includes a runtime backend endpoint field on the home screen so you can change the backend without rebuilding.
