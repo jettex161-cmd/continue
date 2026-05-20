@@ -52,4 +52,12 @@ To build a debug APK locally:
 npm run android:build
 ```
 
+The app includes a runtime backend endpoint field so you can configure which API host it uses on the device.
+
+- For Android emulator: use `http://10.0.2.2:5000`
+- For a local Android Termux/server backend: use `http://127.0.0.1:5000`
+- For a hosted backend: use the public API URL
+
+If the app shows a backend connection error, open the backend host field and set the correct address before retrying.
+
 This mirrors the same native-capable Android workflow used by the GitHub APK build action.

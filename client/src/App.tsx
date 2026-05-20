@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { api } from './api';
+import { api, getApiBaseUrl, setApiBaseUrl } from './api';
 import './App.css';
 import URLInput from './components/URLInput';
 import ScraperSettings from './components/ScraperSettings';
@@ -31,6 +31,8 @@ function App() {
   const [results, setResults] = useState<ScrapResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [apiBaseUrl, setApiBaseUrlState] = useState(getApiBaseUrl());
+  const [apiStatusMessage, setApiStatusMessage] = useState<string>('');
   const [includeJS, setIncludeJS] = useState(false);
   const [screenshot, setScreenshot] = useState(false);
   const [engine, setEngine] = useState<string>('html');
@@ -38,6 +40,19 @@ function App() {
   const [fileType, setFileType] = useState<string>('default');
   const [activeResultsTab, setActiveResultsTab] = useState<'basic' | 'js'>('basic');
   
+  const formatErrorMessage = (err: unknown) => {
+    if (axios.isAxiosError(err)) {
+      return err.response?.data?.error || err.message || `Unable to reach backend at ${apiBaseUrl}.`;
+    }
+    return String(err);
+  };
+
+  const handleSaveApiBaseUrl = () => {
+    setApiBaseUrl(apiBaseUrl);
+    setApiStatusMessage(`Backend endpoint set to ${apiBaseUrl}`);
+    setTimeout(() => setApiStatusMessage(''), 5000);
+  };
+
   // Crawler state
   const [crawlResults, setCrawlResults] = useState<any>(null);
   const [crawlLoading, setCrawlLoading] = useState(false);
@@ -97,9 +112,7 @@ function App() {
       });
       setResults(response.data);
     } catch (err) {
-      const message = axios.isAxiosError(err)
-        ? err.response?.data?.error || err.message
-        : String(err);
+      const message = formatErrorMessage(err);
       setError(message);
     } finally {
       setLoading(false);
@@ -111,6 +124,23 @@ function App() {
       <header className="header">
         <h1>🕷️ Advanced Web Tools</h1>
         <p className="subtitle">Scraping, Crawling & Social Media Research</p>
+        <div className="backend-config">
+          <label htmlFor="apiBaseUrl">Backend API URL</label>
+          <div className="backend-config-row">
+            <input
+              id="apiBaseUrl"
+              value={apiBaseUrl}
+              onChange={(event) => setApiBaseUrlState(event.target.value)}
+              placeholder="http://127.0.0.1:5000"
+            />
+            <button type="button" onClick={handleSaveApiBaseUrl}>Save</button>
+          </div>
+          <p className="backend-hint">
+            Use <strong>127.0.0.1:5000</strong> for a local Termux/server backend or <strong>10.0.2.2:5000</strong> for Android emulator.
+            If you have a hosted backend, enter that URL instead.
+          </p>
+          {apiStatusMessage && <p className="backend-status">{apiStatusMessage}</p>}
+        </div>
         
         {/* Mode Toggle */}
         <div className="mode-toggle-container">

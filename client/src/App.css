@@ -199,6 +199,54 @@ body {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
+.backend-config {
+  margin: 1rem auto 0;
+  max-width: 720px;
+  text-align: left;
+}
+
+.backend-config-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.backend-config input {
+  flex: 1;
+  min-width: 250px;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #555;
+  background: #1a1a1a;
+  color: #e8e8e8;
+}
+
+.backend-config button {
+  padding: 0.75rem 1.25rem;
+  background: #d4af37;
+  border: none;
+  border-radius: 10px;
+  color: #1a1a1a;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.backend-config button:hover {
+  opacity: 0.95;
+}
+
+.backend-hint,
+.backend-status {
+  margin-top: 0.75rem;
+  color: #c0c0c0;
+  font-size: 0.9rem;
+}
+
+.backend-status {
+  color: #a3ff9a;
+}
+
 .example-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

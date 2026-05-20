@@ -1,39 +1,83 @@
 import axios from 'axios';
 
+const STORAGE_KEY = 'webScraperApiBaseUrl';
 const envBase = import.meta.env.VITE_API_BASE_URL?.trim();
 const isCapacitorNative = typeof window !== 'undefined' && !!(window as any).Capacitor;
 const isAndroid = typeof navigator !== 'undefined' && /android/i.test(navigator.userAgent);
 const webBase = '/api';
+const androidLocalBase = 'http://127.0.0.1:5000';
 const androidEmulatorBase = 'http://10.0.2.2:5000';
 
+function normalizeBaseUrl(value?: string): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  return value.trim().replace(/\/+$/, '');
+}
+
+function getSavedApiBaseUrl(): string | undefined {
+  if (typeof window === 'undefined' || !window.localStorage) {
+    return undefined;
+  }
+
+  return normalizeBaseUrl(window.localStorage.getItem(STORAGE_KEY) ?? undefined);
+}
+
 function resolveApiBaseUrl() {
+  const savedBase = getSavedApiBaseUrl();
+  if (savedBase) {
+    return savedBase;
+  }
+
   if (envBase) {
-    return envBase;
+    return normalizeBaseUrl(envBase)!;
   }
 
   if (isCapacitorNative) {
-    // Use Android emulator loopback when running as a native app.
     if (isAndroid) {
-      return androidEmulatorBase;
+      return androidLocalBase;
     }
 
-    // For iOS or physical devices, provide a custom API URL with VITE_API_BASE_URL.
-    return webBase;
+    return androidLocalBase;
   }
 
   return webBase;
 }
 
-export const API_BASE_URL = resolveApiBaseUrl();
-
 export const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: resolveApiBaseUrl(),
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error) && !error.response) {
+      const baseUrl = getApiBaseUrl();
+      error.message = `Unable to reach backend at ${baseUrl}. Ensure the server is running and the endpoint is reachable from this device.`;
+    }
+    return Promise.reject(error);
+  }
+);
+
 export function getApiBaseUrl() {
-  return API_BASE_URL;
+  return api.defaults.baseURL ?? '';
+}
+
+export function setApiBaseUrl(baseUrl: string) {
+  const normalized = normalizeBaseUrl(baseUrl) ?? '';
+
+  if (typeof window !== 'undefined' && window.localStorage) {
+    if (normalized) {
+      window.localStorage.setItem(STORAGE_KEY, normalized);
+    } else {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  api.defaults.baseURL = normalized || webBase;
 }

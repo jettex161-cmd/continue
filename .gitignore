@@ -8,7 +8,8 @@ build/
 .vscode/
 .idea/
 .DS_Store
-android/
+# Track the native Android project files so the APK build is reproducible.
+# Still ignore Gradle build outputs and generated caches.
 android/app/build/
 android/.gradle/
 www/
