@@ -35,9 +35,9 @@ function resolveApiBaseUrl() {
   }
 
   if (isCapacitorNative && isAndroid) {
-    // Default to the Android emulator host mapping.
-    // On a real Android device, set the backend URL manually to 127.0.0.1 when running a Termux-local server.
-    return androidEmulatorBase;
+    // Default to the local Android embedded backend host.
+    // For an APK with a bundled backend, the server runs inside the device/emulator.
+    return androidLocalBase;
   }
 
   return webBase;

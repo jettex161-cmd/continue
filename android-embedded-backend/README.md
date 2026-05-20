@@ -28,11 +28,14 @@ This option is therefore a prototype for a lightweight embedded backend. For a f
 ## What is included here
 
 - `README.md` — this design and execution notes.
-- `setup-embedded-backend.sh` — a scaffold script showing the plugin and sync steps.
+- `setup-embedded-backend.sh` — a helper script to prepare the embedded backend files.
 - `server-compatibility.md` — notes on compatibility and how the current backend must be trimmed.
+- `embedded-server/` — a minimal embedded server prototype based on Express, Axios and Cheerio.
+- `integration-notes.md` — concrete integration instructions for Android.
 
 ## Next review steps
 
-1. Review `setup-embedded-backend.sh` for the exact Node.js Mobile plugin setup.
-2. Review `server-compatibility.md` to decide which backend modules must remain.
-3. If you want, I can then implement a concrete Capacitor + Node.js Mobile integration and a minimal bundled server entrypoint.
+1. Review `embedded-server/` to see the minimal HTML scraping backend.
+2. Run `android-embedded-backend/setup-embedded-backend.sh` to copy the prototype into the Android assets.
+3. Update `android/app/src/main/java/com/webscraper/app/MainActivity.java` with the NodeJS Mobile startup code.
+4. Build the Android APK and test basic embedded scraping from the packaged app.

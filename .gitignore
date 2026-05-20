@@ -12,6 +12,7 @@ build/
 # Still ignore Gradle build outputs and generated caches.
 android/app/build/
 android/.gradle/
+android/app/src/main/assets/nodejs-project/
 www/
 ios/App/Pods/
 
