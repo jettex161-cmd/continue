@@ -48,6 +48,13 @@ cd android
 android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
+### Android standalone review options
+
+If you want to evaluate alternate standalone techniques, review the prototype folders:
+
+- `android-embedded-backend/`
+- `android-termux-backend/`
+
 ### Android backend setup
 This app requires a backend API endpoint to be reachable by the mobile app.
 

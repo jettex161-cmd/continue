@@ -62,4 +62,11 @@ Important: the APK is the frontend only. You must run the backend server separat
 
 If the app shows a backend connection error, start the backend and then update the backend host field before retrying.
 
+## Standalone Android review options
+
+Two prototype review paths are available in this repository:
+
+- `android-embedded-backend/` — a bundled Node runtime approach for a standalone APK with a local backend.
+- `android-termux-backend/` — an Android Termux-based backend option where the app connects to a device-local server.
+
 This mirrors the same native-capable Android workflow used by the GitHub APK build action.
